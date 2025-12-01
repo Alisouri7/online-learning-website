@@ -22,14 +22,16 @@ const schema = new mongoose.Schema({
         type: String,
         required: true
     },
+    confirmPassword: {
+        type: String
+    },
     role: {
         type: String,
         default: 'USER',                 //default, no need to required
-        enum: ['ADMIN','USER']           //enumareted, property must be one of this words
+        enum: ['ADMIN', 'USER']           //enumareted, property must be one of this words
     },
-
 },
-{timestamps: true}                        //timestamps option, add createdAt and updatedAt to document!
+    { timestamps: true }                        //timestamps option, add createdAt and updatedAt to document!
 )
 
 const model = mongoose.model('User', schema)

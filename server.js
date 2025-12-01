@@ -4,7 +4,7 @@ require('dotenv').config()
 
 const port = process.env.PORT;
 
-(async() => {
+(async () => {
     await mongoose.connect(process.env.MONGO_URI)
     console.log('db connected');
 })()

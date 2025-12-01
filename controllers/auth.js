@@ -5,20 +5,20 @@ const jwt = require('jsonwebtoken')
 const registerValidator = require('./../validators/register')
 
 exports.register = async (req, res) => {
-    const validationResult = registerValidator(req.body);
-    if (!validationResult) {
-        return res.status(422).json(validationResult);
+    const validationResult = registerValidator.check(req.body);
+    if (validationResult !== true) {
+        return res.status(422).json({ validationResult });
     }
 
-    const {username, name, email, password, phone} = req.body;
+    const { username, name, email, password, phone } = req.body;
 
     const isUserExist = await userModel.findOne({
-        $or: [{username}, {email}]
+        $or: [{ username }, { email }]
     });
     if (isUserExist) {
-        return res.status(409).json({message: 'userame or email ha used before!'});
+        return res.status(409).json({ message: 'userame or email ha used before!' });
     }
-    const countOfUsers = await userModel.countDocuments({})
+    const countOfUsers = await userModel.countDocuments({});
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
 
@@ -28,13 +28,15 @@ exports.register = async (req, res) => {
         name,
         phone,
         password: hashedPassword,
-        role: countOfUsers? 'USER':'ADMIN'
+        role: countOfUsers ? 'USER' : 'ADMIN'
     });
-    const accessToken = jwt.sign({ id: user._id}, process.env.JWT_SECRET, {
-        expiresIn:'30 day'
+    const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
+        expiresIn: '30 day'
     });
 
-    return res.status(201).json({user, token: accessToken})
+    const userObject = user.toObject()
+    Reflect.deleteProperty(userObject, 'password')
+    return res.status(201).json({ userObject, token: accessToken })
 };
 
 exports.login = async (req, res) => {
