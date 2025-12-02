@@ -7,6 +7,7 @@ exports.banUser = async (req, res) => {
         phone: mainUser.phone
     });
     if (banUserResult) {
+        await userModel.deleteOne({_id: mainUser._id})
         return res.status(200).json({message: 'user banned successfully'})
     }
     return res.status(500).json({message: 'server error in ban user'})

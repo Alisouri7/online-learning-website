@@ -1,4 +1,5 @@
 const userModel = require('./../models/user');
+const banModel = require('./../models/ban-phone')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
@@ -18,6 +19,13 @@ exports.register = async (req, res) => {
     if (isUserExist) {
         return res.status(409).json({ message: 'userame or email ha used before!' });
     }
+
+    const isUserBanned = await banModel.findOne({phone: phone}).lean();
+
+    if (isUserBanned) {
+        return res.status(409).json({message: 'user has been banned.'})
+    };
+
     const countOfUsers = await userModel.countDocuments({});
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(password, salt);
