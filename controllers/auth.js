@@ -48,7 +48,25 @@ exports.register = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
+    const { indentifier, password} = req.body;                       //data that we can identify user like email or username
+    const user = await userModel.findOne({
+        $or: [{email: indentifier}, {username: indentifier}]
+    });
 
+    if (!user) {
+        return res.status(401).json({message: 'There is no with this email or username.'})
+    };
+
+    const isPasswordValid = await bcrypt.compare(password, user.password)
+
+    if (!isPasswordValid) {
+        return res.status(401).json({mesage: 'password is not correct'})
+    };
+
+    const accessToken = jwt.sign({id: user._id}, process.env.JWT_SECRET, {
+        expiresIn: '30 day'
+    });
+    return res.json({accessToken})
 };
 
 exports.getMe = async (req, res) => {
