@@ -20,10 +20,10 @@ exports.register = async (req, res) => {
         return res.status(409).json({ message: 'userame or email ha used before!' });
     }
 
-    const isUserBanned = await banModel.findOne({phone: phone}).lean();
+    const isUserBanned = await banModel.findOne({ phone: phone }).lean();
 
     if (isUserBanned) {
-        return res.status(409).json({message: 'user has been banned.'})
+        return res.status(409).json({ message: 'user has been banned.' })
     };
 
     const countOfUsers = await userModel.countDocuments({});
@@ -48,25 +48,25 @@ exports.register = async (req, res) => {
 };
 
 exports.login = async (req, res) => {
-    const { indentifier, password} = req.body;                       //data that we can identify user like email or username
+    const { identifier, password } = req.body;                       //data that we can identify user like email or username
     const user = await userModel.findOne({
-        $or: [{email: indentifier}, {username: indentifier}]
+        $or: [{ email: identifier }, { username: identifier }]
     });
 
     if (!user) {
-        return res.status(401).json({message: 'There is no with this email or username.'})
+        return res.status(401).json({ message: 'There is no user with this email or username.' })
     };
 
     const isPasswordValid = await bcrypt.compare(password, user.password)
 
     if (!isPasswordValid) {
-        return res.status(401).json({mesage: 'password is not correct'})
+        return res.status(401).json({ mesage: 'password is not correct' })
     };
 
-    const accessToken = jwt.sign({id: user._id}, process.env.JWT_SECRET, {
+    const accessToken = jwt.sign({ id: user._id }, process.env.JWT_SECRET, {
         expiresIn: '30 day'
     });
-    return res.json({accessToken})
+    return res.json({ accessToken })
 };
 
 exports.getMe = async (req, res) => {
