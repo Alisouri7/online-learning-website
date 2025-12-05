@@ -11,7 +11,7 @@ const port = process.env.PORT;
 
 app.get('/', (req, res) => {
     console.log('token: ', req.header('Authorization').split(' ')[1]);
-    console.log(jwt.verify(req.header('Authorization').split(' ')[1], process.env.JWT_SECRET));
+    console.log(jwt.verify(req.headers.authorization.split(' ')[1], process.env.JWT_SECRET));
     
     res.status(200).json({message: 'ok'})
 })
