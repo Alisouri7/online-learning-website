@@ -4,8 +4,8 @@ const jwt = require('jsonwebtoken')
 module.exports = async (req, res, next) => {                         //this middleware determines that user has a token in req object or not 
     const authHeader = req.headers.authorization?.split(' ');
 
-    if (authHeader.length !== 2) {
-        return res.status(403).json({ message: 'please login and recieve access token ' })
+    if (authHeader?.length !== 2) {
+        return res.status(403).json({ message: 'please login and recieve access token (route protected)' })
     };
 
     const token = authHeader[1];
