@@ -16,10 +16,10 @@ module.exports = async (req, res, next) => {                         //this midd
 
         const user = await userModel.findById(jwtPayload.id).lean();
         Reflect.deleteProperty(user, 'password');
-        
+
         req.user = user;
         
-        next()
+        next();
     } catch (err) {
         return res.json(err)
     }
