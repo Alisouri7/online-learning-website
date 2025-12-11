@@ -15,3 +15,10 @@ exports.banUser = async (req, res) => {
     }
     return res.status(500).json({ message: 'server error in ban user' })
 }
+
+exports.getAll = async (req, res) => {
+    const users = await userModel.find({}, '-password -__v').lean();      //remove password and __v properties in response
+
+
+    return res.json(users)
+}

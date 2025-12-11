@@ -2,7 +2,7 @@ const userModel = require('./../models/user')
 const jwt = require('jsonwebtoken')
 
 module.exports = async (req, res, next) => {                         //this middleware determines that user has a token in req object or not 
-    const authHeader = req.headers.authorization?.split(' ');
+    const authHeader = req.headers.authorization?.split(' ');        //optional chaining
 
     if (authHeader?.length !== 2) {
         return res.status(403).json({ message: 'please login and recieve access token (route protected)' })
