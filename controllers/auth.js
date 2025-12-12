@@ -17,7 +17,7 @@ exports.register = async (req, res) => {
         $or: [{ username }, { email }]
     });
     if (isUserExist) {
-        return res.status(409).json({ message: 'userame or email ha used before!' });
+        return res.status(409).json({ message: 'userame or email has used before!' });
     }
 
     const isUserBanned = await banModel.findOne({ phone: phone }).lean();
