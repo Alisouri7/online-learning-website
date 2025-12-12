@@ -1,5 +1,6 @@
 const userModel = require('./../models/user');
 const banModel = require('./../models/ban-phone');
+const mongoose = require('mongoose');
 
 exports.banUser = async (req, res) => {
     const mainUser = await userModel.findOne({ _id: req.params.id }).lean();
@@ -19,6 +20,20 @@ exports.banUser = async (req, res) => {
 exports.getAll = async (req, res) => {
     const users = await userModel.find({}, '-password -__v').lean();      //remove password and __v properties in response
 
-
     return res.json(users)
+}
+
+exports.deleteUser = async (req, res) => {
+    const isValidUserId = mongoose.Types.ObjectId.isValid(req.params.id);
+
+    if (!isValidUserId) {
+        return res.status(409).json({message: 'user id is not valid'})
+    };
+
+    const removedUser = await userModel.findByIdAndDelete({_id: req.params.id});
+
+    if (removedUser) {
+        return res.status(204).json({message: 'user successfully removed'})
+    };
+    return res.status(404).json({message: 'user not  found in DB'});
 }
