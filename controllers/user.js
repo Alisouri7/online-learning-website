@@ -27,35 +27,37 @@ exports.deleteUser = async (req, res) => {
     const isValidUserId = mongoose.Types.ObjectId.isValid(req.params.id);
 
     if (!isValidUserId) {
-        return res.status(409).json({message: 'user id is not valid'})
+        return res.status(409).json({ message: 'user id is not valid' })
     };
 
     const removedUser = await userModel.findByIdAndDelete(req.params.id);
 
     if (removedUser) {
-        return res.status(204).json({message: 'user successfully removed'})
+        return res.status(204).json({ message: 'user successfully removed' })
     };
-    return res.status(404).json({message: 'user not  found in DB'});
+    return res.status(404).json({ message: 'user not  found in DB' });
 }
 
 exports.changeRole = async (req, res) => {
     const isValidUserId = mongoose.Types.ObjectId.isValid(req.body.id);
 
     if (!isValidUserId) {
-        return res.status(409).json({message: 'user id is not valid'})
+        return res.status(409).json({ message: 'user id is not valid' })
     };
 
     const user = await userModel.findById(req.body.id);
 
-    let newRole = user.role === 'ADMIN'? 'USER' : "ADMIN";
+    let newRole = user.role === 'ADMIN' ? 'USER' : "ADMIN";
 
     const updatedUser = await userModel.findByIdAndUpdate(req.body.id, {
         role: newRole
     })
 
-    if(updatedUser) {
-        return res.status(200).json({message: 'user role changed successfully'})
+    if (updatedUser) {
+
+        return res.status(200).json({ message: 'user role changed successfully' })
     }
-    return res.status(400).json({message: 'user role changed failed'})
-    
+
+    return res.status(400).json({ message: 'user role changed failed' })
+
 }
