@@ -37,3 +37,15 @@ exports.deleteUser = async (req, res) => {
     };
     return res.status(404).json({message: 'user not  found in DB'});
 }
+
+exports.changeRole = async (req, res) => {
+    const isValidUserId = mongoose.Types.ObjectId.isValid(req.body.id);
+
+    if (!isValidUserId) {
+        return res.status(409).json({message: 'user id is not valid'})
+    };
+
+    const user = await userModel.findOne({_id: req.body.id});
+
+    let newRole = user.role === 'ADMIN'? 'USER' : "ADMIN"
+}
