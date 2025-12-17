@@ -7,4 +7,5 @@ const isAdminMiddleware = require('./../middlewares/isAdmin')
 router.route('/ban/:id').post(authMiddleware, isAdminMiddleware, userController.banUser)
 router.route('/').get(authMiddleware, isAdminMiddleware, userController.getAll)
 router.route('/delete/:id').delete(authMiddleware, isAdminMiddleware, userController.deleteUser)
+router.route('/role').put(authMiddleware, isAdminMiddleware, userController.changeRole)
 module.exports = router

@@ -30,7 +30,7 @@ exports.deleteUser = async (req, res) => {
         return res.status(409).json({message: 'user id is not valid'})
     };
 
-    const removedUser = await userModel.findByIdAndDelete({_id: req.params.id});
+    const removedUser = await userModel.findByIdAndDelete(req.params.id);
 
     if (removedUser) {
         return res.status(204).json({message: 'user successfully removed'})
