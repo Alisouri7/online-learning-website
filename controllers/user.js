@@ -45,7 +45,17 @@ exports.changeRole = async (req, res) => {
         return res.status(409).json({message: 'user id is not valid'})
     };
 
-    const user = await userModel.findOne({_id: req.body.id});
+    const user = await userModel.findById(req.body.id);
 
-    let newRole = user.role === 'ADMIN'? 'USER' : "ADMIN"
+    let newRole = user.role === 'ADMIN'? 'USER' : "ADMIN";
+
+    const updatedUser = await userModel.findByIdAndUpdate(req.body.id, {
+        role: newRole
+    })
+
+    if(updatedUser) {
+        return res.status(200).json({message: 'user role changed successfully'})
+    }
+    return res.status(400).json({message: 'user role changed failed'})
+    
 }
