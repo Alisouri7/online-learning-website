@@ -76,4 +76,6 @@ exports.updateUser = async (req, res) => {
         phone
     });
 
+    Reflect.deleteProperty(user, 'password')
+    return res.json({user})
 }
