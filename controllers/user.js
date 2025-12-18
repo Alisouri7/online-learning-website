@@ -76,5 +76,5 @@ exports.updateUser = async (req, res) => {
         phone
     }).select('-password').lean();
 
-    return res.json({userObject})
+    return res.json({user})
 }
