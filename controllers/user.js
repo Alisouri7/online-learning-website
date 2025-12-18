@@ -74,7 +74,7 @@ exports.updateUser = async (req, res) => {
         email,
         password: hashedPassword,
         phone
-    }).select('-password');
-    
+    }).select('-password').lean();
+
     return res.json({userObject})
 }
