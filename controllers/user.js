@@ -75,7 +75,7 @@ exports.updateUser = async (req, res) => {
         password: hashedPassword,
         phone
     });
-
-    Reflect.deleteProperty(user, 'password')
-    return res.json({user})
+    const userObject = user.toObject()
+    Reflect.deleteProperty(userObject, 'password')
+    return res.json({userObject})
 }
