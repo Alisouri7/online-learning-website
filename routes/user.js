@@ -7,8 +7,8 @@ const isAdminMiddleware = require('./../middlewares/isAdmin')
 router.route('/ban/:id').post(authMiddleware, isAdminMiddleware, userController.banUser);
 
 router.route('/')
-                .get(authMiddleware, isAdminMiddleware, userController.getAll)
-                .put(authMiddleware, userController.updateUser);
+    .get(authMiddleware, isAdminMiddleware, userController.getAll)
+    .put(authMiddleware, userController.updateUser);
 
 router.route('/delete/:id').delete(authMiddleware, isAdminMiddleware, userController.deleteUser);
 

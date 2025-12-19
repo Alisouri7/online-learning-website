@@ -64,17 +64,18 @@ exports.changeRole = async (req, res) => {
 }
 
 exports.updateUser = async (req, res) => {
-    const {name, username, email, password, phone} = req.body;
+    const { name, username, email, password, phone } = req.body;
 
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    const user = await userModel.findOneAndUpdate({_id: req.user._id}, {
-        name,
-        username,
-        email,
-        password: hashedPassword,
-        phone
+    await userModel.findByIdAndUpdate({ _id: req.user._id }, {
+            name,
+            username,
+            email,
+            password: hashedPassword,
+            phone
     }).select('-password').lean();
 
-    return res.json({user})
+    const user = await userModel.findOne({_id: req.user._id})
+    return res.json({ user })
 }
