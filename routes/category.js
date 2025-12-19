@@ -5,4 +5,6 @@ const categoryController = require('./../category.js')
 
 const router = express.Router();
 
-router.route('/').post(authMiddlware, isAdminMiddleware, );
+router.route('/')
+                .post(authMiddlware, isAdminMiddleware, categoryController.create)
+                .get(categoryController.getAll);
