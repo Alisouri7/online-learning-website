@@ -13,3 +13,5 @@ router.route('/')
 router.route('/:id')
                     .put(authMiddlware, isAdminMiddleware, categoryController.update)
                     .delete(authMiddlware, isAdminMiddleware, categoryController.remove);
+
+module.exports = router;
