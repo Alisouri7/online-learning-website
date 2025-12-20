@@ -33,12 +33,17 @@ exports.remove = async (req, res) => {
     const isObjectIdValid = mongoose.Types.ObjectId.isValid(req.params.id)
 
     if (!isObjectIdValid) {
-        return res.json({message: 'categorys id is not valid'})
+        return res.json({ message: 'categorys id is not valid' })
     };
 
-    const category = await categoryModel.findOneAndDelete({_id: req.params.id})
+    const isCategoryExist = await categoryModel.findOne({ _id: req.params.id })
+    if (isCategoryExist) {
+        const category = await categoryModel.findOneAndDelete({ _id: req.params.id })
 
-    return res.status(200).json(category)
+        return res.status(200).json(category)
+    }
+    return res.status(404).json({message: 'this category is not exist!'})
+
 }
 
 exports.update = async (req, res) => {
