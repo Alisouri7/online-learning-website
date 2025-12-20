@@ -62,9 +62,11 @@ exports.update = async (req, res) => {
         return res.json({ message: 'there is a title or href like your req.body' })
     };
 
-    const category = await categoryModel.findOneAndUpdate({ _id: req.params.id }, {
+    await categoryModel.findOneAndUpdate({ _id: req.params.id }, {
         title,
         href
     })
+
+    const category = await categoryModel.findOne({_id: req.params.id})
     return res.status(200).json(category);
 }
