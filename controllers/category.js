@@ -33,7 +33,7 @@ exports.remove = async (req, res) => {
     const isObjectIdValid = mongoose.Types.ObjectId.isValid(req.params.id)
 
     if (!isObjectIdValid) {
-        return res.json({ message: 'categorys id is not valid' })
+        return res.json({ message: 'category id is not valid' })
     };
 
     const isCategoryExist = await categoryModel.findOne({ _id: req.params.id })
@@ -41,11 +41,30 @@ exports.remove = async (req, res) => {
         const category = await categoryModel.findOneAndDelete({ _id: req.params.id })
 
         return res.status(200).json(category)
-    }
-    return res.status(404).json({message: 'this category is not exist!'})
+    };
+    return res.status(404).json({ message: 'this category is not exist!' });
 
 }
 
 exports.update = async (req, res) => {
+    const { title, href } = req.body;
+    const isObjectIdValid = mongoose.Types.ObjectId.isValid(req.params.id);
 
+    if (!isObjectIdValid) {
+        return res.json({ message: 'category id is not valid' })
+    };
+
+    const isTitleOrHrefExist = await categoryModel.findOne({
+        $or: [{ title }, { href }]
+    });
+
+    if (isTitleOrHrefExist) {
+        return res.json({ message: 'there is a title or href like your req.body' })
+    };
+
+    const category = await categoryModel.findOneAndUpdate({ _id: req.params.id }, {
+        title,
+        href
+    })
+    return res.status(200).json(category);
 }
