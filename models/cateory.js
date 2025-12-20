@@ -9,7 +9,7 @@ const schema = mongoose.Schema({
         type: String,
         required: true
     }
-});
+}, { timestamps: true });
 
 const model = mongoose.model('Category', schema);
 
