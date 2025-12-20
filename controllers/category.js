@@ -10,6 +10,13 @@ exports.create = async (req, res) => {
         return res.status(400).json({message: 'category information is not valid'})
     };
 
+    const isCategoryExist = await categoryModel.find({
+        $or: [{title}, {href}]
+    })
+    if (isCategoryExist) {
+        return res.status().json({message: 'there is a category with same name or href'})
+    };
+    
     const category = await categoryModel.create({
         title,
         href
