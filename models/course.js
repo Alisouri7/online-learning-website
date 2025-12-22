@@ -36,9 +36,27 @@ const schema = mongoose.Schema({
     },
         categoryID: {
         type: mongoose.Types.ObjectId,
-        ref: "Category"
+        ref: "Category",
+        required: true
+    },
+        creator: {
+        type: mongoose.Types.ObjectId,
+        ref: 'User',
+        required: true
     },
 } , { timestamps: true});
+
+schema.virtual('sessions', {
+    ref: 'Session',
+    locaField: '_id',
+    foreignField: 'course'
+});
+
+schema.virtual('comments', {
+    ref: 'Comment',
+    locaField: '_id',
+    foreignField: 'course'
+});
 
 const model = mongoose.model('Course', schema);
 
