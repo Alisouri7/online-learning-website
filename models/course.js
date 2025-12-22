@@ -6,11 +6,11 @@ const schema = mongoose.Schema({
         type: String,
         required: true
     },
-        description: {
+    description: {
         type: String,
         required: true
     },
-        cover: {
+    cover: {
         type: String,
         required: true
     },
@@ -18,33 +18,33 @@ const schema = mongoose.Schema({
         type: Number,
         required: true
     },
-        support: {
+    support: {
         type: String,
         required: true
     },
-        href: {
+    href: {
         type: String,
         required: true
     },
-        status: {
+    status: {
         type: String,
         required: true
     },
-        discount: {
+    discount: {
         type: Number,
         required: true
     },
-        categoryID: {
+    categoryID: {
         type: mongoose.Types.ObjectId,
         ref: "Category",
         required: true
     },
-        creator: {
+    creator: {
         type: mongoose.Types.ObjectId,
         ref: 'User',
         required: true
     },
-} , { timestamps: true});
+}, { timestamps: true });
 
 schema.virtual('sessions', {
     ref: 'Session',
