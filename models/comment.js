@@ -21,7 +21,8 @@ const schema = mongoose.Schema({
     },
     score: {
         type: Number,
-        default: 5
+        default: 5,
+        enum: [1,2,3,4,5]
     },
     isAnswer: {
         type: Number,
