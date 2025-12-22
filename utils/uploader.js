@@ -11,7 +11,7 @@ module.exports = multer.diskStorage({
     },
     filename: (req, file, cb) => {
         // const fileName = Date.now() + String((Math.random() * 9999));
-        
+
         const fileName = crypto
             .createHash('SHA256')             //creates a hash object with the specified algorithm
             .update(file.originalname)        //updates the hash content with the given data
@@ -19,6 +19,6 @@ module.exports = multer.diskStorage({
 
         const ext = path.extname(file.originalname);
 
-        cb(null, fileName, ext);
+        cb(null, fileName + ext);
     }
-})
+});
