@@ -23,6 +23,6 @@ const schema = mongoose.Schema({
     }
 }, { timestamps: true });
 
-const model = mongoose.model(schema)
+const model = mongoose.model('Session',schema)
 
 module.export = model;
