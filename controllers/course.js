@@ -18,7 +18,7 @@ exports.create = async (req, res) => {
 
     if (!isSameTitleOrHrefExist) {
         return res.status(409).json({message: 'There is a course with same title or href'})
-    }
+    };
 
     const course = await courseModel.create({
         title,
