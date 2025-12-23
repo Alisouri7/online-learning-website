@@ -1,4 +1,6 @@
 const courseModel = require('./../models/course');
+const courseValidator = require('./../validators/course');
+const mongoose = require('mongoose');
 
 exports.create = async (req, res) => {
     const {
@@ -20,6 +22,19 @@ exports.create = async (req, res) => {
         return res.status(409).json({message: 'There is a course with same title or href'})
     };
 
+
+    const isCourseValid = courseValidator(req.body);
+
+    if (!isCourseValid) {
+        return res.json({isCourseValid})
+    };
+
+    const isCategoryIDValid = mongoose.Types.ObjectId.isValid(categoryID)
+
+    if (!isCategoryIDValid) {
+        return res.json({message: 'categoryid is not valid'})
+    };
+    
     const course = await courseModel.create({
         title,
         description,
