@@ -48,13 +48,13 @@ const schema = mongoose.Schema({
 
 schema.virtual('sessions', {
     ref: 'Session',
-    locaField: '_id',
+    localField: '_id',
     foreignField: 'course'
 });
 
 schema.virtual('comments', {
     ref: 'Comment',
-    locaField: '_id',
+    localField: '_id',
     foreignField: 'course'
 });
 
