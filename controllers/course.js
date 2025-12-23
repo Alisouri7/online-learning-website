@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 exports.create = async (req, res) => {
     const {
-        title,
+        name,
         description,
         price,
         support,
@@ -15,28 +15,28 @@ exports.create = async (req, res) => {
     } = req.body;
 
     const isSameTitleOrHrefExist = await courseModel.findOne({
-        $or: [{ title }, { href }]
+        $or: [{ name }, { href }]
     });
 
-    if (!isSameTitleOrHrefExist) {
-        return res.status(409).json({message: 'There is a course with same title or href'})
+    if (isSameTitleOrHrefExist) {
+        return res.status(409).json({ message: 'There is a course with same title or href' })
     };
 
 
-    const isCourseValid = courseValidator(req.body);
+    const isCourseValid = courseValidator.check(req.body)
 
     if (!isCourseValid) {
-        return res.json({isCourseValid})
+        return res.json({ isCourseValid })
     };
 
     const isCategoryIDValid = mongoose.Types.ObjectId.isValid(categoryID)
 
     if (!isCategoryIDValid) {
-        return res.json({message: 'categoryid is not valid'})
+        return res.json({ message: 'categoryid is not valid' })
     };
-    
+
     const course = await courseModel.create({
-        title,
+        name,
         description,
         price,
         support,
@@ -46,5 +46,8 @@ exports.create = async (req, res) => {
         categoryID,
         creator: req.user._id,
         cover: req.file.filename
-    })
+    });
+
+    const mainCourse = await courseModel.findById(course._id).populate('creator', '-password');
+    return res.status(201).json({ mainCourse })
 }
