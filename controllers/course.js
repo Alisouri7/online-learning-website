@@ -1,6 +1,8 @@
 const courseModel = require('./../models/course');
+const sessionModel = require('./../models/session');
 const courseValidator = require('./../validators/course');
 const mongoose = require('mongoose');
+
 
 exports.create = async (req, res) => {
     const {
@@ -51,4 +53,8 @@ exports.create = async (req, res) => {
 
     const mainCourse = await courseModel.findById(course._id).populate('creator', '-password');
     return res.status(201).json({ mainCourse })
+}
+
+exports.createSession = async (req, res) => {
+
 }
