@@ -1,5 +1,5 @@
 const Validator = require('fastest-validator');
-const v = new Validator()
+const v = new Validator();
 
 const schema = {
     name: {
@@ -9,7 +9,7 @@ const schema = {
         type: 'string'
     },
     price: {
-        type: 'number'
+        type: 'string'
     },
     support: {
         type: 'string'
@@ -21,7 +21,7 @@ const schema = {
         type: 'string'
     },
     discount: {
-        type: 'number'
+        type: 'string'
     },
     categoryID: {
         type: 'string'

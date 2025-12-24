@@ -25,8 +25,9 @@ exports.create = async (req, res) => {
 
     const isCourseValid = courseValidator.check(req.body)
 
-    if (!isCourseValid) {
-        return res.json({ isCourseValid })
+    if (isCourseValid !== true) {
+        console.log(isCourseValid);
+        return res.status(422).json({ isCourseValid })
     };
 
     const isCategoryIDValid = mongoose.Types.ObjectId.isValid(categoryID)
