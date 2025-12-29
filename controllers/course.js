@@ -73,7 +73,7 @@ exports.createSession = async (req, res) => {
 }
 
 exports.getAllSessions = async (req, res) => {
-    const sessions = await sessionModel.find({}, '-__v').populate('course', 'name').lean();
+    const sessions = await sessionModel.find({}, '-__v').populate('course', 'name price').lean();
 
     return res.status(200).json(sessions)
 }
