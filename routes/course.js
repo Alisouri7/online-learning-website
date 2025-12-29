@@ -22,5 +22,6 @@ router.route('/:id/sessions').post(
     courseController.createSession
 );
 
+router.route('/sessions').get(authMiddleware, isAdminMiddleware, courseController.getAllSessions)
 
 module.exports = router;
