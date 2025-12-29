@@ -14,7 +14,7 @@ app.use(express.urlencoded({extended: false}));
 app.use('/courses/covers', express.static(path.join(__dirname,'public' , 'courses', 'covers')));
 
 app.use('/auth', authRouter);
-app.use('/users/', usersRouter);
+app.use('/users', usersRouter);
 app.use('/category', categoryRouter);
 app.use('/courses', courseRouter);
 
