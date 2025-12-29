@@ -25,4 +25,4 @@ const schema = mongoose.Schema({
 
 const model = mongoose.model('Session',schema)
 
-module.export = model;
+module.exports = model;

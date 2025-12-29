@@ -53,12 +53,14 @@ exports.create = async (req, res) => {
 
     const mainCourse = await courseModel.findById(course._id).populate('creator', '-password');
     return res.status(201).json({ mainCourse })
-}
+};
 
 exports.createSession = async (req, res) => {
     const courseId = req.params.id;
     const { title, time, free } = req.body;
 
+    console.log(sessionModel);
+    
     const session = await sessionModel.create({
         title,
         time,
