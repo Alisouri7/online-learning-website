@@ -22,9 +22,9 @@ router.route('/:id/sessions').post(
     courseController.createSession
 );
 
-router.route('/sessions').get(authMiddleware, isAdminMiddleware, courseController.getAllSessions)
+router.route('/sessions').get(authMiddleware, isAdminMiddleware, courseController.getAllSessions);
 
 
-router.route('/:href/:sessionID').get(courseController.getSessionInfo);
+router.route('/:href/:sessionID').get(courseController.getSessionInfo);            //href: course href
 
 module.exports = router;
