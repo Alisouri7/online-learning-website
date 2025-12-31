@@ -77,3 +77,7 @@ exports.getAllSessions = async (req, res) => {
 
     return res.status(200).json(sessions)
 }
+
+exports.getSessionInfo = async (req, res) => {
+    
+}
