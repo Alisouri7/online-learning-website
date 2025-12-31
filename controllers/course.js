@@ -60,7 +60,7 @@ exports.createSession = async (req, res) => {
     const { title, time, free } = req.body;
 
     console.log(sessionModel);
-    
+
     const session = await sessionModel.create({
         title,
         time,
@@ -79,11 +79,12 @@ exports.getAllSessions = async (req, res) => {
 }
 
 exports.getSessionInfo = async (req, res) => {
-    const course = await courseModel.findOne({ href: req.params.href}).lean();
+    const course = await courseModel.find({ href: req.params.href }).lean();
+    console.log(course);
 
-    const session = await sessionModel.findOne({_id: req.params.sessionID});
+    const session = await sessionModel.findOne({ _id: req.params.sessionID }).lean();
 
-    const sessions = await sessionModel.find({course: course._id});
+    const sessions = await sessionModel.find({ course: course[0]._id }).lean();
 
-    return res.status(200).json(session, sessions);
+    return res.status(200).json({ session, sessions });
 }
