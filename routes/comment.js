@@ -3,6 +3,6 @@ const router = express.Router();
 const authMiddleware = require('./../middlewares/auth');
 const commentController = require('./../controllers/comment');
 
-router.route('/').post(authMiddleware, commentController);
+router.route('/').post(authMiddleware, commentController.create);
 
 module.exports = router;
