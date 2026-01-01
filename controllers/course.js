@@ -70,13 +70,13 @@ exports.createSession = async (req, res) => {
     });
 
     return res.status(201).json(session)
-}
+};
 
 exports.getAllSessions = async (req, res) => {
     const sessions = await sessionModel.find({}, '-__v').populate('course', 'name price').lean();
 
     return res.status(200).json(sessions)
-}
+};
 
 exports.getSessionInfo = async (req, res) => {
     const course = await courseModel.find({ href: req.params.href }).lean();
@@ -87,4 +87,16 @@ exports.getSessionInfo = async (req, res) => {
     const sessions = await sessionModel.find({ course: course[0]._id }).lean();
 
     return res.status(200).json({ session, sessions });
-}
+};
+
+exports.removeSession = async (req, res) => {
+    const session = await sessionModel.findOneAndDelete({
+    _id: qs.params.id       
+    });
+
+    if (!session) {
+        return res.status(404).json({message: 'couldnt remove session!'})
+    };
+
+    return res.status(204).json(session)
+};
