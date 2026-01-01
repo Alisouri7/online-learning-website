@@ -91,7 +91,7 @@ exports.getSessionInfo = async (req, res) => {
 
 exports.removeSession = async (req, res) => {
     const session = await sessionModel.findOneAndDelete({
-    _id: qs.params.id       
+    _id: req.params.id       
     });
 
     if (!session) {
