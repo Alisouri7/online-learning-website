@@ -22,7 +22,7 @@ router.route('/:id/sessions').post(
     courseController.createSession
 );
 
-router.route('/:id/register').post()
+router.route('/:id/register').post(authMiddleware, courseController.register)   //this route use for register a user to a course
 
 router.route('/sessions').get(authMiddleware, isAdminMiddleware, courseController.getAllSessions);
 
