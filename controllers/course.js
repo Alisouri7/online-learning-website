@@ -1,6 +1,7 @@
 const courseModel = require('./../models/course');
 const sessionModel = require('./../models/session');
 const courseValidator = require('./../validators/course');
+const courseUserModel = require('./../models/course-user');
 const mongoose = require('mongoose');
 
 
@@ -55,6 +56,22 @@ exports.create = async (req, res) => {
     return res.status(201).json({ mainCourse })
 };
 
+exports.register = async (req, res) => {
+    const isUserAlreadyRegistered = await courseUserModel.find({ user: req.user._id, course: req.params.id }).lean();
+
+    if (isUserAlreadyRegistered) {
+        return res.status(409).json({message: 'user has aready registered in this course'})
+    }
+
+    const register = await courseUserModel.create({
+        user: req.user._id,
+        course: req.params.id,
+        price: req.body.price
+    });
+
+    return res.status(201).json({message: 'you are registered to course successfully'})
+}
+
 exports.createSession = async (req, res) => {
     const courseId = req.params.id;
     const { title, time, free } = req.body;
@@ -91,11 +108,11 @@ exports.getSessionInfo = async (req, res) => {
 
 exports.removeSession = async (req, res) => {
     const session = await sessionModel.findOneAndDelete({
-    _id: req.params.id       
+        _id: req.params.id
     });
 
     if (!session) {
-        return res.status(404).json({message: 'couldnt remove session!'})
+        return res.status(404).json({ message: 'couldnt remove session!' })
     };
 
     return res.status(204).json(session)
