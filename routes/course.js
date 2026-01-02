@@ -6,7 +6,6 @@ const courseController = require('./../controllers/course');
 const multer = require('multer');
 const multerCoverStorage = require('../utils/coverUploader');
 const multerVideoStorage = require('./../utils/videoUploader');
-const courseUserModel = require('./../models/course-user');
 
 router.route('/')
 .post(authMiddleware, 

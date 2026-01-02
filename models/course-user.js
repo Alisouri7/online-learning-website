@@ -19,4 +19,5 @@ const schema = mongoose.Schema({
 }, { timestamps: true});
 
 const model = mongoose.model('CourseUser', schema);
+
 module.exports = model;

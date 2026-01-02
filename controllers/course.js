@@ -57,7 +57,7 @@ exports.create = async (req, res) => {
 };
 
 exports.register = async (req, res) => {
-    const isUserAlreadyRegistered = await courseUserModel.find({ user: req.user._id, course: req.params.id }).lean();
+    const isUserAlreadyRegistered = await courseUserModel.findOne({ user: req.user._id, course: req.params.id }).lean();
 
     if (isUserAlreadyRegistered) {
         return res.status(409).json({message: 'user has aready registered in this course'})
@@ -69,7 +69,7 @@ exports.register = async (req, res) => {
         price: req.body.price
     });
 
-    return res.status(201).json({message: 'you are registered to course successfully'})
+    return res.status(201).json({message: 'you registered to course successfully'})
 }
 
 exports.createSession = async (req, res) => {
