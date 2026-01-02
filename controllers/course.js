@@ -80,7 +80,7 @@ exports.getCoursesByCategory = async (req, res) => {
     if (category) {
         const courses = await courseModel.find({categoryID: category._id});
 
-        return res.status(200).json([courses])
+        return res.status(200).json(courses)
     } else {
         return res.status(404).json({message: 'caetgory not found'})
     }
