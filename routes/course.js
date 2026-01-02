@@ -14,6 +14,9 @@ router.route('/')
     courseController.create);
 
 
+
+    router.route('/category/:href').get(courseController.getCoursesByCategory)
+
 router.route('/:id/sessions').post(
     authMiddleware,
     isAdminMiddleware,

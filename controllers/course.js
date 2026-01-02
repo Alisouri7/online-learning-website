@@ -72,6 +72,10 @@ exports.register = async (req, res) => {
     return res.status(201).json({message: 'you registered to course successfully'})
 }
 
+exports.getCoursesByCategory = async (req, res) => {
+    
+}
+
 exports.createSession = async (req, res) => {
     const courseId = req.params.id;
     const { title, time, free } = req.body;
