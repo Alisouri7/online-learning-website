@@ -75,7 +75,15 @@ exports.register = async (req, res) => {
 
 exports.getCoursesByCategory = async (req, res) => {
     const  {href} = req.params;
-    const category = await categoryModel.findOne({href})
+    const category = await categoryModel.findOne({href}).lean();
+
+    if (category) {
+        const courses = await courseModel.find({categoryID: category._id});
+
+        return res.status(200).json({message: ''})
+    } else {
+        return res.status(404).json({message: 'caetgory not found'})
+    }
 }
 
 exports.createSession = async (req, res) => {
