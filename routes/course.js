@@ -15,7 +15,7 @@ router.route('/')
 
 
 
-    router.route('/category/:href').get(courseController.getCoursesByCategory)
+router.route('/category/:href').get(courseController.getCoursesByCategory)
 
 router.route('/:id/sessions').post(
     authMiddleware,

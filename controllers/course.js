@@ -2,6 +2,7 @@ const courseModel = require('./../models/course');
 const sessionModel = require('./../models/session');
 const courseValidator = require('./../validators/course');
 const courseUserModel = require('./../models/course-user');
+const categoryModel = require('./../models/cateory');
 const mongoose = require('mongoose');
 
 
@@ -73,7 +74,8 @@ exports.register = async (req, res) => {
 }
 
 exports.getCoursesByCategory = async (req, res) => {
-    
+    const  {href} = req.params;
+    const category = await categoryModel.findOne({href})
 }
 
 exports.createSession = async (req, res) => {
