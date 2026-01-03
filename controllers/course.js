@@ -73,6 +73,12 @@ exports.register = async (req, res) => {
     return res.status(201).json({message: 'you registered to course successfully'})
 }
 
+exports.getOne = async (req, res) => {
+    const course = await courseModel.findOne({href: req.params.href});
+    console.log(course);
+    
+}
+
 exports.getCoursesByCategory = async (req, res) => {
     const  {href} = req.params;
     const category = await categoryModel.findOne({href}).lean();
