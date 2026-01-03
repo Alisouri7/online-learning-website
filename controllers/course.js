@@ -80,10 +80,12 @@ exports.getOne = async (req, res) => {
     .populate('creator', '-password')
     .populate('categoryID');
     
-    const sessions = await sessionModel.find({course: course._id});
-    const comments = await commentModel.find({course: course._id});
+    const sessions = await sessionModel.find({course: course._id}).lean();
+    const comments = await commentModel.find({course: course._id, isAccept: 1}).lean();
 
-    return res.status(200).json({course, sessions, comments})
+    const courseStudentsCount = await courseUserModel.countDocuments({ course: course._id});
+
+    return res.status(200).json({course, sessions, comments, courseStudentsCount})
 }
 
 exports.getCoursesByCategory = async (req, res) => {
