@@ -3,6 +3,7 @@ const sessionModel = require('./../models/session');
 const courseValidator = require('./../validators/course');
 const courseUserModel = require('./../models/course-user');
 const categoryModel = require('./../models/cateory');
+const commentModel = require('./../models/comment');
 const mongoose = require('mongoose');
 
 
@@ -79,8 +80,10 @@ exports.getOne = async (req, res) => {
     .populate('creator', '-password')
     .populate('categoryID');
     
+    const sessions = await sessionModel.find({course: course._id});
+    const comments = await commentModel.find({course: course._id});
 
-    return res.status(200).json(course)
+    return res.status(200).json({course, sessions, comments})
 }
 
 exports.getCoursesByCategory = async (req, res) => {
