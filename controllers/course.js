@@ -74,7 +74,10 @@ exports.register = async (req, res) => {
 }
 
 exports.getOne = async (req, res) => {
-    const course = await courseModel.findOne({href: req.params.href});
+    const course = await courseModel
+    .findOne({href: req.params.href})
+    .populate('creator', '-password')
+    .populate('categoryID');
     
 
     return res.status(200).json(course)
