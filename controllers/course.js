@@ -75,8 +75,9 @@ exports.register = async (req, res) => {
 
 exports.getOne = async (req, res) => {
     const course = await courseModel.findOne({href: req.params.href});
-    console.log(course);
     
+
+    return res.status(200).json(course)
 }
 
 exports.getCoursesByCategory = async (req, res) => {

@@ -15,6 +15,8 @@ router.route('/')
 
 
 
+router.route('/:href').get(courseController.getOne);
+
 router.route('/category/:href').get(courseController.getCoursesByCategory);
 
 router.route('/:id/sessions').post(
