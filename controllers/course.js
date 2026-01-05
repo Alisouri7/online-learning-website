@@ -85,7 +85,13 @@ exports.getOne = async (req, res) => {
 
     const courseStudentsCount = await courseUserModel.countDocuments({ course: course._id});         //counting number of course students
 
-    return res.status(200).json({course, sessions, comments, courseStudentsCount})
+
+    const isUserRegisteredToThisCourse = !!(await courseUserModel.findOne({                         // this signs (!!) just change result to boolean
+        course: course._id,
+        user: req.user._id
+    }))
+
+    return res.status(200).json({course, sessions, comments, courseStudentsCount, isUserRegisteredToThisCourse})
 }
 
 exports.getCoursesByCategory = async (req, res) => {

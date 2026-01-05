@@ -15,7 +15,7 @@ router.route('/')
 
 
 
-router.route('/:href').get(courseController.getOne);
+router.route('/:href').get(authMiddleware, courseController.getOne);
 
 router.route('/category/:href').get(courseController.getCoursesByCategory);
 
