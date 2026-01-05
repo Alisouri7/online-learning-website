@@ -89,7 +89,7 @@ exports.getOne = async (req, res) => {
     const isUserRegisteredToThisCourse = !!(await courseUserModel.findOne({                         // this signs (!!) just change result to boolean
         course: course._id,
         user: req.user._id
-    }))
+    }));
 
     return res.status(200).json({course, sessions, comments, courseStudentsCount, isUserRegisteredToThisCourse})
 }
