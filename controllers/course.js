@@ -86,7 +86,7 @@ exports.getOne = async (req, res) => {
     const courseStudentsCount = await courseUserModel.countDocuments({ course: course._id});         //counting number of course students
 
 
-    const isUserRegisteredToThisCourse = !!(await courseUserModel.findOne({                         // this signs (!!) just change result to boolean
+    const isUserRegisteredToThisCourse = !!(await courseUserModel.findOne({                         // this signs (!!)  change result to boolean - this constant will show to front end to show course to user or not
         course: course._id,
         user: req.user._id
     }));
