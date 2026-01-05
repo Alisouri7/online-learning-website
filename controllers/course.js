@@ -83,7 +83,7 @@ exports.getOne = async (req, res) => {
     const sessions = await sessionModel.find({course: course._id}).lean();
     const comments = await commentModel.find({course: course._id, isAccept: 1}).lean();
 
-    const courseStudentsCount = await courseUserModel.countDocuments({ course: course._id});
+    const courseStudentsCount = await courseUserModel.countDocuments({ course: course._id});         //counting number of course students
 
     return res.status(200).json({course, sessions, comments, courseStudentsCount})
 }
