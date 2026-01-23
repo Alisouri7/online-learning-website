@@ -7,12 +7,12 @@ const multer = require('multer');
 const multerCoverStorage = require('../utils/coverUploader');
 const multerVideoStorage = require('./../utils/videoUploader');
 
-router.route('/')
-.post(authMiddleware, 
+router.route('/').post(
+    authMiddleware, 
     isAdminMiddleware, 
     multer({ storage: multerCoverStorage, limits: { fileSize: 10000000 } }).single('cover'), 
-    courseController.create);
-
+    courseController.create
+);
 
 
 router.route('/:href').get(authMiddleware, courseController.getOne);
@@ -26,7 +26,7 @@ router.route('/:id/sessions').post(
     courseController.createSession
 );
 
-router.route('/:id/register').post(authMiddleware, courseController.register)   //this route use for register a user to a course
+router.route('/:id/register').post(authMiddleware, courseController.register)   //this route use for register a user to a course - id is user object id
 
 router.route('/sessions').get(authMiddleware, isAdminMiddleware, courseController.getAllSessions);
 
