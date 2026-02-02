@@ -80,8 +80,8 @@ exports.getOne = async (req, res) => {
     .populate('creator', '-password')
     .populate('categoryID');
     
-    const sessions = await sessionModel.find({course: course._id}).lean();
-    const comments = await commentModel.find({course: course._id, isAccept: 1}).lean();
+    const sessions = await sessionModel.find({course: course._id}).lean();                           //virtual relation
+    const comments = await commentModel.find({course: course._id, isAccept: 1}).lean();              //virtual relation
 
     const courseStudentsCount = await courseUserModel.countDocuments({ course: course._id});         //counting number of course students
 
@@ -106,6 +106,36 @@ exports.getCoursesByCategory = async (req, res) => {
         return res.status(404).json({message: 'caetgory not found'})
     }
 }
+
+exports.remove = async (req, res) => {
+
+    const isObjectIdValid = mongoose.Types.ObjectId.isValid(req.params.id);
+
+    if (!isObjectIdValid) {
+        return res.json({message: 'id is not valid'})
+    }
+
+    const course = await courseModel.findOneAndDelete({_id: req.params.id});
+    return res.json({message: `${course} deleted successfully.`})
+};
+
+exports.getRelated = async (req, res) => {
+    const {href} = req.params;
+
+    const course = await courseModel.findOne({href: href});
+
+    if (!course) {
+        return res.json({message: 'course not found'})
+    };
+
+    let relatedCourses = await courseModel.find({categoryID: course.categoryID});
+
+    relatedCourses = relatedCourses.filter((course) => {                            //this filter returns all courses in category exept course sent in params
+        course.href !== href
+    });
+
+    return res.json(relatedCourses)
+};
 
 exports.createSession = async (req, res) => {
     const courseId = req.params.id;

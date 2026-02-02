@@ -19,6 +19,10 @@ router.route('/:href').get(authMiddleware, courseController.getOne);
 
 router.route('/category/:href').get(courseController.getCoursesByCategory);
 
+router.route('/:id').delete(authMiddleware, isAdminMiddleware, courseController.remove);
+
+router.route('/related/:href').get(courseController.getRelated);
+
 router.route('/:id/sessions').post(
     authMiddleware,
     isAdminMiddleware,
