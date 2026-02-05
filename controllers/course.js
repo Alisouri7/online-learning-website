@@ -62,7 +62,7 @@ exports.register = async (req, res) => {
     const isUserAlreadyRegistered = await courseUserModel.findOne({ user: req.user._id, course: req.params.id }).lean();
 
     if (isUserAlreadyRegistered) {
-        return res.status(409).json({message: 'user has aready registered in this course'})
+        return res.status(409).json({ message: 'user has aready registered in this course' })
     }
 
     const register = await courseUserModel.create({
@@ -71,39 +71,60 @@ exports.register = async (req, res) => {
         price: req.body.price
     });
 
-    return res.status(201).json({message: 'you registered to course successfully'})
+    return res.status(201).json({ message: 'you registered to course successfully' })
 }
 
 exports.getOne = async (req, res) => {
     const course = await courseModel
-    .findOne({href: req.params.href})
-    .populate('creator', '-password')
-    .populate('categoryID');
-    
-    const sessions = await sessionModel.find({course: course._id}).lean();                           //virtual relation
-    const comments = await commentModel.find({course: course._id, isAccept: 1}).lean();              //virtual relation
+        .findOne({ href: req.params.href })
+        .populate('creator', '-password')
+        .populate('categoryID');
 
-    const courseStudentsCount = await courseUserModel.countDocuments({ course: course._id});         //counting number of course students
+    const sessions = await sessionModel.find({ course: course._id }).lean();                           //virtual relation
+    const comments = await commentModel.find({ course: course._id, isAccept: 1 })                       //virtual relation
+        .populate('course')
+        .populate('creator')
+        .lean();
 
+    let allComments = [];                                                                             //push each comment(as an object) with its answers
+
+    comments.forEach((comment) => {
+
+        comments.forEach((answerComment) => {
+
+            if (String(comment._id) == String(answerComment.mainCommentID)) {
+                allComments.push({
+                    ...comment,
+                    course: comment.course.name,
+                    creator: comment.creator.name,
+                    answerComment
+                })
+            }
+
+        })
+
+    });
+
+    const courseStudentsCount = await courseUserModel.countDocuments({ course: course._id });         //counting number of course students
 
     const isUserRegisteredToThisCourse = !!(await courseUserModel.findOne({                         // this signs (!!)  change result to boolean - this constant will show to front end to show course to user or not
         course: course._id,
         user: req.user._id
     }));
 
-    return res.status(200).json({course, sessions, comments, courseStudentsCount, isUserRegisteredToThisCourse})
+    return res.status(200).json({ course, sessions, comments: allComments, courseStudentsCount, isUserRegisteredToThisCourse })
 }
 
 exports.getCoursesByCategory = async (req, res) => {
-    const  {href} = req.params;
-    const category = await categoryModel.findOne({href}).lean();
+    const { href } = req.params;
+    const category = await categoryModel.findOne({ href }).lean();
 
     if (category) {
-        const courses = await courseModel.find({categoryID: category._id});
+        const courses = await courseModel.find({ categoryID: category._id });
 
         return res.status(200).json(courses)
     } else {
-        return res.status(404).json({message: 'caetgory not found'})
+        return res.status(404).json({ message: 'caetgory not found' })
     }
 }
 
@@ -112,23 +133,23 @@ exports.remove = async (req, res) => {
     const isObjectIdValid = mongoose.Types.ObjectId.isValid(req.params.id);
 
     if (!isObjectIdValid) {
-        return res.json({message: 'id is not valid'})
+        return res.json({ message: 'id is not valid' })
     }
 
-    const course = await courseModel.findOneAndDelete({_id: req.params.id});
-    return res.json({message: `${course} deleted successfully.`})
+    const course = await courseModel.findOneAndDelete({ _id: req.params.id });
+    return res.json({ message: `${course} deleted successfully.` })
 };
 
 exports.getRelated = async (req, res) => {
-    const {href} = req.params;
+    const { href } = req.params;
 
-    const course = await courseModel.findOne({href: href});
+    const course = await courseModel.findOne({ href: href });
 
     if (!course) {
-        return res.json({message: 'course not found'})
+        return res.json({ message: 'course not found' })
     };
 
-    let relatedCourses = await courseModel.find({categoryID: course.categoryID});
+    let relatedCourses = await courseModel.find({ categoryID: course.categoryID });
 
     relatedCourses = relatedCourses.filter((course) => {                            //this filter returns all courses in category exept course sent in params
         course.href !== href
