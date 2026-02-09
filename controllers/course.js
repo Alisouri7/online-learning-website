@@ -82,28 +82,35 @@ exports.getOne = async (req, res) => {
 
     const sessions = await sessionModel.find({ course: course._id }).lean();                           //virtual relation
     const comments = await commentModel.find({ course: course._id, isAccept: 1 })                       //virtual relation
-        .populate('course')
-        .populate('creator')
+        .populate('course', 'name')
+        .populate('creator', 'username name')
         .lean();
 
-    let allComments = [];                                                                             //push each comment(as an object) with its answers
+    let commentsWithAnswers = [];                                                                             //push each comment(as an object) with its answers
+    let answerComments = [];
 
     comments.forEach((comment) => {
 
-        comments.forEach((answerComment) => {
+        if (comment.isAnswer === 0) {
 
-            if (String(comment._id) == String(answerComment.mainCommentID)) {
-                allComments.push({
-                    ...comment,
-                    course: comment.course.name,
-                    creator: comment.creator.name,
-                    answerComment
-                })
+            for (let i = 0; i < comments.length; i++) {
+
+                if (String(comment._id) === String(comments[i].mainCommentID)) {
+                    answerComments.push(comments[i]);
+                }
+
             }
 
-        })
+            commentsWithAnswers.push(comment);
+
+            commentsWithAnswers[commentsWithAnswers.indexOf(comment)].answers = [];
+            commentsWithAnswers[commentsWithAnswers.indexOf(comment)].answers.push(answerComments);
+            answerComments = [];
+
+        }
 
     });
+
 
     const courseStudentsCount = await courseUserModel.countDocuments({ course: course._id });         //counting number of course students
 
@@ -112,7 +119,7 @@ exports.getOne = async (req, res) => {
         user: req.user._id
     }));
 
-    return res.status(200).json({ course, sessions, comments: allComments, courseStudentsCount, isUserRegisteredToThisCourse })
+    return res.status(200).json({ course, sessions, commentsWithAnswers, courseStudentsCount, isUserRegisteredToThisCourse })
 }
 
 exports.getCoursesByCategory = async (req, res) => {
