@@ -96,6 +96,7 @@ exports.getOne = async (req, res) => {
             for (let i = 0; i < comments.length; i++) {
 
                 if (String(comment._id) === String(comments[i].mainCommentID)) {
+                    comments[i].answers = [];
                     answerComments.push(comments[i]);
                 }
 
@@ -104,7 +105,9 @@ exports.getOne = async (req, res) => {
             commentsWithAnswers.push(comment);
 
             commentsWithAnswers[commentsWithAnswers.indexOf(comment)].answers = [];
-            commentsWithAnswers[commentsWithAnswers.indexOf(comment)].answers.push(answerComments);
+            
+            commentsWithAnswers[commentsWithAnswers.indexOf(comment)].answers.push(...answerComments);
+            
             answerComments = [];
 
         }

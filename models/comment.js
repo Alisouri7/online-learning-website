@@ -24,7 +24,11 @@ const schema = mongoose.Schema({
         default: 5,
         enum: [1,2,3,4,5]
     },
-    isAnswer: {
+    isAnswer: {                                                //if the comment is not a base comment this is 1
+        type: Number,
+        required: true
+    },
+    isReply: {                                                 //if the comment be a reply to answer this is 1, otherwise 0
         type: Number,
         required: true
     },
