@@ -81,7 +81,7 @@ exports.getOne = async (req, res) => {
         .populate('categoryID');
 
     const sessions = await sessionModel.find({ course: course._id }).lean();                           //virtual relation
-    const comments = await commentModel.find({ course: course._id, isAccept: 1 })                       //virtual relation
+    let comments = await commentModel.find({ course: course._id, isAccept: 1 })                       //virtual relation
         .populate('course', 'name')
         .populate('creator', 'username name')
         .lean();
@@ -91,29 +91,44 @@ exports.getOne = async (req, res) => {
 
     comments.forEach((comment) => {
 
-        if (comment.isAnswer === 0) {
+        if (comment.isReply === 1) {
 
+            for (let i = 0; i < comments.length; i++) {
+                if (String(comment.mainCommentID) === String(comments[i]._id)) {
+                    comments[i].answers = [];
+                    comments[i].answers.push(comment)
+                }
+            }
+
+        } else if (comment.isAnswer === 0) {
+            
             for (let i = 0; i < comments.length; i++) {
 
                 if (String(comment._id) === String(comments[i].mainCommentID)) {
-                    comments[i].answers = [];
-                    answerComments.push(comments[i]);
+
+                    if (comments[i].answers === undefined) {
+                        comments[i].answers = [];
+                        answerComments.push(comments[i]);
+                    } else {
+                        answerComments.push(comments[i]);
+                    }
+                    
                 }
 
             }
 
+
             commentsWithAnswers.push(comment);
 
             commentsWithAnswers[commentsWithAnswers.indexOf(comment)].answers = [];
-            
-            commentsWithAnswers[commentsWithAnswers.indexOf(comment)].answers.push(...answerComments);
-            
-            answerComments = [];
 
+            commentsWithAnswers[commentsWithAnswers.indexOf(comment)].answers.push(...answerComments);
+
+            answerComments = [];
         }
 
     });
-
+     
 
     const courseStudentsCount = await courseUserModel.countDocuments({ course: course._id });         //counting number of course students
 

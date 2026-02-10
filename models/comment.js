@@ -24,13 +24,13 @@ const schema = mongoose.Schema({
         default: 5,
         enum: [1,2,3,4,5]
     },
-    isAnswer: {                                                //if the comment is not a base comment this is 1
+    isAnswer: {                                                //if the comment is not a base comment this is 1, base comments are 0
         type: Number,
         required: true
     },
-    isReply: {                                                 //if the comment be a reply to answer this is 1, otherwise 0
+    isReply: {                                                 //this field determin that the comment is a reply for answer (1) or not (0) - it can be a reply for a reply! - if the comment is reply, both isAnswer and isReply is 1
         type: Number,
-        required: true
+        required:true
     },
     mainCommentID: {
         type: mongoose.Types.ObjectId,
