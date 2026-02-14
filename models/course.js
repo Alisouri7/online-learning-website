@@ -26,7 +26,7 @@ const schema = mongoose.Schema({
         type: String,
         required: true
     },
-    status: {
+    status: {                                               //complete - presell - ongoing
         type: String,
         required: true
     },

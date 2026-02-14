@@ -101,7 +101,7 @@ exports.getOne = async (req, res) => {
             }
 
         } else if (comment.isAnswer === 0) {
-            
+
             for (let i = 0; i < comments.length; i++) {
 
                 if (String(comment._id) === String(comments[i].mainCommentID)) {
@@ -112,7 +112,7 @@ exports.getOne = async (req, res) => {
                     } else {
                         answerComments.push(comments[i]);
                     }
-                    
+
                 }
 
             }
@@ -128,7 +128,7 @@ exports.getOne = async (req, res) => {
         }
 
     });
-     
+
 
     const courseStudentsCount = await courseUserModel.countDocuments({ course: course._id });         //counting number of course students
 
@@ -138,6 +138,54 @@ exports.getOne = async (req, res) => {
     }));
 
     return res.status(200).json({ course, sessions, commentsWithAnswers, courseStudentsCount, isUserRegisteredToThisCourse })
+}
+
+exports.popular = async (req, res) => {
+    let comments = await commentModel.find({ isAccept: 1, isAnswer: 0, }).select('course score').lean();
+    let courses = await courseModel.find({}).lean();
+    let results = [];
+    let eachCourseComments = [];
+
+
+    for (let i = 0; i < courses.length; i++) {
+        eachCourseComments[i] = [];
+        eachCourseComments[i].push(courses[i].href)
+        comments.forEach((comment) => {
+            if (String(comment.course) === String(courses[i]._id)) {
+                eachCourseComments[i].push(comment)
+            }
+
+        })
+    };
+
+    for (let i = 0; i < eachCourseComments.length; i++) {
+        results[i] = [eachCourseComments[i][0]];
+        eachCourseComments[i].shift();
+        if (eachCourseComments[i].length < 2) {
+            results[i].push(0)
+        } else {
+            let sum = 0;
+
+            for (let j = 0; j < eachCourseComments[i].length; j++) {
+                
+                if (eachCourseComments[i][j].score ) {
+                    sum = eachCourseComments[i][j].score + sum;
+                }
+
+            }
+            sum = sum / (eachCourseComments[i].length)
+            results[i].push(sum)
+        }
+
+    }
+
+
+
+    return res.json(results)
+}
+
+exports.presell = async (req, res) => {
+
 }
 
 exports.getCoursesByCategory = async (req, res) => {
