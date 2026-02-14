@@ -98,6 +98,6 @@ exports.answer = async (req, res) => {
 };
 
 exports.getAll = async (req, res) => {
-    const comments = await commentModel.find({}).populate('course').populate('creator').lean();
+    const comments = await commentModel.find({}).populate('course').populate('creator', '-password').lean();
     return res.status(200).json(comments)
 }
