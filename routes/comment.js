@@ -12,4 +12,6 @@ router.route('/:id').put(authMiddleware, isAdminMiddleware, commentController.is
 
 router.route('/:id/answer').post(authMiddleware, isAdminMiddleware, commentController.answer);     //reply to comments through admin - id : that comment has been replied to
 
+router.route('/').get(authMiddleware, isAdminMiddleware, commentController.getAllComments);
+
 module.exports = router;

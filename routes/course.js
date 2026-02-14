@@ -18,6 +18,7 @@ router.route('/popular').get(courseController.popular);
 
 router.route('/presell').get(courseController.presell);
 
+
 router.route('/:href').get(authMiddleware, courseController.getOne);
 
 router.route('/category/:href').get(courseController.getCoursesByCategory);

@@ -96,3 +96,8 @@ exports.answer = async (req, res) => {
 
     return res.status(201).json(answerComment)
 };
+
+exports.getAll = async (req, res) => {
+    const comments = await commentModel.find({});
+    return res.status(200).json(comments)
+}
