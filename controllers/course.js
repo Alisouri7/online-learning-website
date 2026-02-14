@@ -185,8 +185,8 @@ exports.popular = async (req, res) => {
 }
 
 exports.presell = async (req, res) => {
-    const courses = await courseModel.find({status: 'presell'});
-    res.status(200).json(courses)
+    const courses = await courseModel.find({status: 'presell'}).lean();
+    res.status(200).json(...courses)
 }
 
 exports.getCoursesByCategory = async (req, res) => {
