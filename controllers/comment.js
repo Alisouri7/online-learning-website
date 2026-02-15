@@ -99,5 +99,28 @@ exports.answer = async (req, res) => {
 
 exports.getAll = async (req, res) => {
     const comments = await commentModel.find({}).populate('course').populate('creator', '-password').lean();
-    return res.status(200).json(comments)
+
+    let mainComments = [];
+
+    comments.forEach(comment => {
+        if (comment.isAccept === 0 || 1 && comment.isAnswer === 0) {
+            mainComments.push(comment)
+            mainComments[mainComments.indexOf(comment)].answers = [];
+            comments.forEach((answerComment) => {
+                if (String(comment._id) === String(answerComment.mainCommentID)) {
+                    answerComment.answers = [];
+                    comment.answers.push(answerComment)
+                }
+            })
+        } else if (comment.isReply === 1) {
+            comment.answers = [];
+
+            comments.forEach((answerComment) => {
+                if (String(comment.mainCommentID) === String(answerComment._id)) {
+                    answerComment.answers.push(comment)
+                }
+            })
+        }
+    });
+    return res.status(200).json(mainComments)
 }
