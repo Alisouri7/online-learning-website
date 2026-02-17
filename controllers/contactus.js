@@ -22,7 +22,14 @@ exports.getAll = async (req, res) => {
 };
 
 exports.remove = async (req, res) => {
+    const isValidObjectID = mongoose.Types.ObjectId.isValid(req.params.id);
 
+    if (!isValidObjectID) {
+        return res.json({message: 'id is not valid'})
+    }
+    const contact = await contactusModel.findOneAndDelete({_id: req.params.id});
+
+    return res.status(204).json({message: `this contact ${contact} has been deleted` })
 };
 
 exports.answer = async (req, res) => {
