@@ -7,6 +7,7 @@ const usersRouter = require('./routes/user')
 const categoryRouter = require('./routes/category')
 const courseRouter = require('./routes/course')
 const commentRouter = require('./routes/comment');
+const contactusRouter = require('./routes/contactus');
 
 const app = express();
 app.use(cors());
