@@ -20,5 +20,6 @@ app.use('/users', usersRouter);
 app.use('/category', categoryRouter);
 app.use('/courses', courseRouter);
 app.use('/comments', commentRouter);
+app.use('/contactus', contactusRouter);
 
 module.exports = app;
