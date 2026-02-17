@@ -17,7 +17,8 @@ exports.create = async (req, res) => {
 };
 
 exports.getAll = async (req, res) => {
-
+    const contacts = await contactusModel.find({}).lean();
+    return res.json(contacts)
 };
 
 exports.remove = async (req, res) => {
