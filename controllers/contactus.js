@@ -29,6 +29,9 @@ exports.remove = async (req, res) => {
     }
     const contact = await contactusModel.findOneAndDelete({_id: req.params.id});
 
+        if(!contact){
+            return res.status(404).json({message: 'contact not found'})
+        }
     return res.status(204).json({message: `this contact ${contact} has been deleted` })
 };
 

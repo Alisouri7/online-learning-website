@@ -11,6 +11,6 @@ router.route('/')
 
 router.route('/:id').delete(authMiddleware, isAdminMiddleware, contactusController.remove);
 
-// router.route('/answer').post(authMiddleware, isAdminMiddleware, contactusController.answer);
+router.route('/answer').post(authMiddleware, isAdminMiddleware, contactusController.answer);
 
 module.exports = router;
