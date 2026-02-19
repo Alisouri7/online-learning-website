@@ -51,12 +51,17 @@ exports.answer = async (req, res) => {
         text: req.body.answer,
     };
 
-    transporter.sendMail(mailOptions, function (err, info) {
+    transporter.sendMail(mailOptions, async function (err, info) {
         if (err) {
             return res.json(err)
         } else {
+            await contactusModel.findOneAndUpdate({ email: req.body.email }, {
+                $set: {
+                    answer: 1
+                }
+            });
             return res.json(info)
         }
     });
-    
+
 };
