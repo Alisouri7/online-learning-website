@@ -50,4 +50,13 @@ exports.answer = async (req, res) => {
         subject: "Hello World",
         text: req.body.answer,
     };
+
+    transporter.sendMail(mailOptions, function (err, info) {
+        if (err) {
+            return res.json(err)
+        } else {
+            return res.json(info)
+        }
+    });
+    
 };
