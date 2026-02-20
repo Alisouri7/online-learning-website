@@ -8,6 +8,8 @@ const categoryRouter = require('./routes/category')
 const courseRouter = require('./routes/course')
 const commentRouter = require('./routes/comment');
 const contactusRouter = require('./routes/contactus');
+const newsletterRouter = require('./routes/newsletter');
+
 
 const app = express();
 app.use(cors());
@@ -21,5 +23,6 @@ app.use('/category', categoryRouter);
 app.use('/courses', courseRouter);
 app.use('/comments', commentRouter);
 app.use('/contact-us', contactusRouter);
+app.use('/newsletters', newsletterRouter);
 
 module.exports = app;
