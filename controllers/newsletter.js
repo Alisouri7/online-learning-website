@@ -5,7 +5,7 @@ exports.getAll = async (req, res) {
     return res, json(newsletters)
 }
 
-exports.create = async (req, res) {
+exports.create = async (req, res) => {
     const { email } = req.body;
     if (email.match(/^((?!\.)[\w\-_.]*[^.])(@\w+)(\.\w+(\.\w+)?[^.\W])$/gm)) {
         const newEmail = await newsletterModel.create({
