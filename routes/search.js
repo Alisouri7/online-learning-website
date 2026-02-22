@@ -1,4 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const searchController = require('./../controllers/search')
-router.get('/:keyword', )
+router.get('/:keyword', searchController.get);
+
+module.exports = router;
