@@ -4,7 +4,10 @@ const authMiddleware  = require('./../middlewares/auth');
 const isAdminMiddleware  = require('./../middlewares/isAdmin');
 const notificationController = require('./../controllers/notification');
 
-router.post('/', authMiddleware, isAdminMiddleware, notificationController.create);
+router.route('/')
+                .post(authMiddleware, isAdminMiddleware, notificationController.create)
+                .get(authMiddleware, isAdminMiddleware, notificationController.getAll);
+
 router.get('/:adminID', notificationController.get);
 router.put('/:id/see', authMiddleware, isAdminMiddleware, notificationController.see);
 

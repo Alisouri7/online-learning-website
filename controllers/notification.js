@@ -9,7 +9,7 @@ exports.create = async (req, res) => {
     if (!isAdminIDValid) {
         return res.json({message: 'admin id is not valid'})
     }
-    
+
     const notification = await notificationModel.create({
         message, admin
     });
@@ -22,5 +22,9 @@ exports.get = async (req, res) => {
 }
 
 exports.see = async (req, res) => {
+    
+}
+
+exports.getAll = async (req, res) => {
     
 }
