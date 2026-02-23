@@ -4,6 +4,12 @@ const mongoose = require('mongoose');
 exports.create = async (req, res) => {
     const {message, admin} = req.body;
 
+    const isAdminIDValid = mongoose.Types.ObjectId.isValid(admin);
+
+    if (!isAdminIDValid) {
+        return res.json({message: 'admin id is not valid'})
+    }
+    
     const notification = await notificationModel.create({
         message, admin
     });

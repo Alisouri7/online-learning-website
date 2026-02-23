@@ -10,6 +10,7 @@ const commentRouter = require('./routes/comment');
 const contactusRouter = require('./routes/contactus');
 const newsletterRouter = require('./routes/newsletter');
 const searchRouter = require('./routes/search');
+const notificationRouter = require('./routes/notification');
 
 const app = express();
 app.use(cors());
@@ -25,5 +26,6 @@ app.use('/comments', commentRouter);
 app.use('/contact-us', contactusRouter);
 app.use('/newsletters', newsletterRouter);
 app.use('/search', searchRouter);
+app.use('/notification', notificationRouter);
 
 module.exports = app;
