@@ -18,7 +18,11 @@ exports.create = async (req, res) => {
 }
 
 exports.get = async (req, res) => {
-    
+    const {_id} = req.user;
+
+    const adminNotifications = await notificationModel.find({admin: _id});
+
+    return res.json(adminNotifications)
 }
 
 exports.see = async (req, res) => {
@@ -26,5 +30,7 @@ exports.see = async (req, res) => {
 }
 
 exports.getAll = async (req, res) => {
-    
+    const notifications = await notificationModel.find({}).lean();
+
+    return res.json(notifications)
 }
