@@ -2,7 +2,13 @@ const notificationModel = require('./../models/notification');
 const mongoose = require('mongoose');
 
 exports.create = async (req, res) => {
+    const {message, admin} = req.body;
 
+    const notification = await notificationModel.create({
+        message, admin
+    });
+
+    return res.status(201).json(notification)
 }
 
 exports.get = async (req, res) => {
