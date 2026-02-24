@@ -14,6 +14,7 @@ exports.create = async (req, res) => {
         creator: req.user._id,
         isAccept: 0,
         isAnswer: 0,
+        isReply: 0
     });
 
     return res.status(201).json(comment)
