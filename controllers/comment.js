@@ -73,7 +73,7 @@ exports.isAccept = async (req, res) => {
 exports.answer = async (req, res) => {
 
     const isCommentIDValid = mongoose.Types.ObjectId.isValid(req.params.id);
-    const { body } = req.body;
+    const { body, isReply } = req.body;
 
     if (!isCommentIDValid) {
         return res.json({ message: 'id is not valid' })
@@ -92,6 +92,7 @@ exports.answer = async (req, res) => {
         creator: mainComment.creator,
         isAccept: 1,
         isAnswer: 1,
+        isReply,
         mainCommentID: req.params.id
     });
 
