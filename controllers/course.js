@@ -237,7 +237,6 @@ exports.createSession = async (req, res) => {
     const courseId = req.params.id;
     const { title, time, free } = req.body;
 
-    console.log(sessionModel);
 
     const session = await sessionModel.create({
         title,
