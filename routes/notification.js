@@ -8,7 +8,7 @@ router.route('/')
                 .post(authMiddleware, isAdminMiddleware, notificationController.create)
                 .get(authMiddleware, isAdminMiddleware, notificationController.getAll);
 
-router.get('/admin', notificationController.get);
+router.get('/admin',authMiddleware ,notificationController.get);
 router.put('/:id/see', authMiddleware, isAdminMiddleware, notificationController.see);
 
 module.exports = router;
