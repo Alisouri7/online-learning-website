@@ -14,5 +14,5 @@ exports.create = async (req, res) => {
         return res.json(newEmail)
     }
 
-     return res.json({message: 'email s not valid'})
+     return res.json({message: 'email is not valid'})
 }
