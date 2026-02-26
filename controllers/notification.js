@@ -32,10 +32,10 @@ exports.see = async (req, res) => {
     const isNotoficationIDValid = mongoose.Types.ObjectId.isValid(id);
 
     if (!isNotoficationIDValid) {
-        return res.json({message: 'id is not valid'})
+        return res.json({ message: 'id is not valid' })
     }
 
-    const notification = await notificationModel.findOneAndupdate({_id: id}, {see: 1});
+    const notification = await notificationModel.findOneAndUpdate({ _id: id }, { $set: { see: 1 } });
     return res.json(notification)
 }
 
