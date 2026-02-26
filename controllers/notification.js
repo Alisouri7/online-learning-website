@@ -18,7 +18,6 @@ exports.create = async (req, res) => {
 }
 
 exports.get = async (req, res) => {
-    console.log(req);
     
     const {_id} = req.user;
 
