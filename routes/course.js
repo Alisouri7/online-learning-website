@@ -36,7 +36,7 @@ router.route('/:id/sessions').post(
     courseController.createSession
 );
 
-router.route('/:id/register').post(authMiddleware, courseController.register)   //this route use for register a user to a course - id is user object id
+router.route('/:id/register').post(authMiddleware, courseController.register)   //this route use for register a user to a course - id is course object id
 
 router.route('/sessions').get(authMiddleware, isAdminMiddleware, courseController.getAllSessions);
 
