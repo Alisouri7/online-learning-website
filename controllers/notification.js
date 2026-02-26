@@ -35,7 +35,7 @@ exports.see = async (req, res) => {
         return res.json({ message: 'id is not valid' })
     }
 
-    const notification = await notificationModel.findOneAndUpdate({ _id: id }, { $set: { see: 1 } });
+    const notification = await notificationModel.findOneAndUpdate({ _id: id }, { $set: { seen: 1 } });
     return res.json(notification)
 }
 
