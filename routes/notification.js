@@ -8,7 +8,7 @@ router.route('/')
                 .post(authMiddleware, isAdminMiddleware, notificationController.create)
                 .get(authMiddleware, isAdminMiddleware, notificationController.getAll);
 
-router.get('/admin',authMiddleware ,notificationController.get);
+router.get('/admin',authMiddleware ,notificationController.get);                         //can send notification to all users, not only admins
 router.put('/:id/see', authMiddleware, isAdminMiddleware, notificationController.see);
 
 module.exports = router;
