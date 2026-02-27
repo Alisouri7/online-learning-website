@@ -13,6 +13,6 @@ router.route('/all').post(authMiddleware, isAdminMiddleware, offController.setOn
 
 router.route('/:code').post(authMiddleware, offController.getOne);
 
-router.route('/:code').delete(authMiddleware,isAdminMiddleware, offController.remove);
+router.route('/:id').delete(authMiddleware,isAdminMiddleware, offController.remove);
 
 module.exports = router
