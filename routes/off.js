@@ -3,7 +3,6 @@ const router = express.Router();
 const authMiddleware = require('./../middlewares/auth');
 const isAdminMiddleware = require('./../middlewares/isAdmin');
 const offController = require('./../controllers/off');
-const auth = require('./../middlewares/auth');
 
 router.route('/')
                 .get(authMiddleware, isAdminMiddleware,offController.getAll)
