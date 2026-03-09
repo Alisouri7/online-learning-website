@@ -4,14 +4,14 @@ const authMiddleware = require('./../middlewares/auth');
 const isAdminMiddleware = require('./../middlewares/isAdmin');
 const offController = require('./../controllers/off');
 
-// router.route('/')
-//                 .get(authMiddleware, isAdminMiddleware,offController.getAll)
-//                 .post(authMiddleware, isAdminMiddleware, offController.create);
+router.route('/')
+                .get(authMiddleware, isAdminMiddleware,offController.getAll)
+                .post(authMiddleware, isAdminMiddleware, offController.create);
 
 router.route('/all').post(authMiddleware, isAdminMiddleware, offController.setOnAll);
 
-// router.route('/:code').post(authMiddleware, offController.getOne);
+router.route('/:code').post(authMiddleware, offController.useOne);
 
-// router.route('/:id').delete(authMiddleware,isAdminMiddleware, offController.remove);
+router.route('/:id/:courseID').delete(authMiddleware,isAdminMiddleware, offController.remove);
 
 module.exports = router
