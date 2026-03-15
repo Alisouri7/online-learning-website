@@ -13,14 +13,10 @@ const schema = mongoose.Schema({
         type: String,
         required: true
     },
-    cover: {
-        type: String,
-        required: true
-    },
-    video: {
+    media: [{
         type: String,
         required: false
-    },
+    }],
     href: {
         type: String,
         required: true
