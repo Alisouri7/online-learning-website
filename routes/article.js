@@ -15,6 +15,6 @@ router.route('/:href').get(articleController.getOne);
 
 router.route('/:id').get(articleController.remove);
 
-router.route("/draft/:id?").post(authMiddleware, isAdminMiddleware, multer({ storage: multerMediaStorage, limits: { fileSize: 100000000 } }).array('media', 50), articleController.saveDraft);   //optional parameter - if article created before use id to update it
+router.route("/draft").post(authMiddleware, isAdminMiddleware, multer({ storage: multerMediaStorage, limits: { fileSize: 100000000 } }).array('media', 50), articleController.saveDraft);
 
 module.exports = router;

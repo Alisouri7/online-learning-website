@@ -47,29 +47,36 @@ exports.remove = async (req, res) => {
 }
 
 exports.saveDraft = async (req, res) => {
-    const isArticleExist = await articleModel.findOne({ _id: req.params.id });
-    if (isArticleExist) {
+    const { id, title, description, body, href, categoryID, author } = req.body;       //if each entity send empty(exept id) means dont want to change or update it, the entity remain on last value
 
-    } else {
-        const { title, description, body, href, categoryID, author } = req.body;
+    const isArticleIDValid = mongoose.Types.ObjectId.isValid(id);
 
-        let medias = [];
-
-        req.files.forEach(media => {
-            medias.push(media.filename)
-        });
-
-        const article = await articleModel.create({
-            title,
-            description,
-            body,
-            href,
-            categoryID,
-            author,
-            media: medias,
-            published: 0
-        })
-
-        return res.json(article)
+    if (!isArticleIDValid) {
+        return res.json({ messae: 'id is not valid' })
     }
+
+    const mainArticle = await articleModel.findOne({ _id: id }).lean();
+
+    let mediasArray = mainArticle.media;
+    
+    req.files.forEach((media) => {
+        mediasArray.push(media.filename)
+    })
+    
+    
+    let mediasSet = new Set(mediasArray);
+
+
+    const updatedArticle = await articleModel.findOneAndUpdate({ _id: id }, {
+        title: title ? title : mainArticle.title,
+        description: description ? description : mainArticle.description,
+        body: body ? body : mainArticle.body,
+        href: href ? href : mainArticle.href,
+        categoryID: categoryID ? categoryID : mainArticle.categoryID,
+        author: author ? author : mainArticle.author,
+        media: [...mediasSet]
+    })
+
+
+    return res.json(updatedArticle)
 }
