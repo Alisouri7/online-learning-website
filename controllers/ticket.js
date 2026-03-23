@@ -1,4 +1,7 @@
-
+const mongoose = require('mongoose');
+const departmentModel = require('./../models/deparment');
+const departmentSubModel = require('./../models/department-sub');
+const ticketModel = require('./../models/ticket');
 
 exports.create = async (req, res) => {
 
