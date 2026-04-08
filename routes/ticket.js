@@ -14,10 +14,10 @@ router.route('/user').get(authMiddleware, ticketController.userTickets);
 
 router.route('/departments').get(ticketController.departments);
 
-router.route('/departments-sub/:id').get(ticketController.departmentsSubs);
+router.route('/departments/:departmentID/subs').get(ticketController.departmentsSubs);      //id is department object id
 
 router.route('/answer').post(authMiddleware, isAdminMiddleware, ticketController.setAnswer);
 
-router.route('/:id/answer').post(authMiddleware, ticketController.getAnswer);
+router.route('/:id/answer').get(authMiddleware, ticketController.getAnswer);
 
 module.exports = router;

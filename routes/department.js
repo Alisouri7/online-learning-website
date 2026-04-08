@@ -8,6 +8,6 @@ const router = express.Router();
 
 router.route('/')
                 .get(authMiddleware, isAdminMiddleware, departmentController.getAll)
-                .post(authMiddleware, isAdminMiddleware, departmentController.create)
+                .post(authMiddleware, isAdminMiddleware, departmentController.create);
 
 module.exports = router;
