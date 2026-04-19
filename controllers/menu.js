@@ -1,7 +1,14 @@
 const menuModel = require('./../models/menu');
+const mongoose = require('mongoose');
 
 exports.create = async (req, res) => {
     const { title, href, parent } = req.body;
+
+    if (parent) {
+        if (!mongoose.Types.ObjectId.isValid(parent)) {
+            return res.json({message: 'parent id is not valid'})
+        }
+    };
 
     const menu = await menuModel.create({
         title,
@@ -13,15 +20,15 @@ exports.create = async (req, res) => {
 }
 
 exports.getAll = async (req, res) => {
-    const allMenus = await menuModel.find({}).lean();
+    let allMenus = await menuModel.find({}).lean();
 
     allMenus.forEach((menu) => {
         const submenus = [];
 
-        for (let i = 0; i < menus.length; i++) {
-            const mainMenu = menus[i];
+        for (let i = 0; i < allMenus.length; i++) {
+            const submenu = allMenus[i];
 
-            if (String(mainMenu.parent) === String(menu._id)) {
+            if (submenu.parent ?.equals(menu._id)) {             //use optioanl chaining + equals() <a method in mongodb and mongoose>
 
                 submenus.push(allMenus.splice(i, 1)[0]);         //splice return an array involves removed element
                 i = i - 1;
@@ -33,7 +40,7 @@ exports.getAll = async (req, res) => {
 
     })
 
-    return res.json(menus)
+    return res.json(allMenus)
 }
 
 exports.getAllInPanel = async (req, res) => {
@@ -43,5 +50,13 @@ exports.getAllInPanel = async (req, res) => {
 }
 
 exports.remove = async (req, res) => {
+    const isMenuIDValid = mongoose.Types.ObjectId.isValid(req.params.id);
 
+    if (!isMenuIDValid) {
+        return res.json({message: 'menuID is not valid'})
+    };
+
+    const menu = await menuModel.findOneAndDelete({_id: req.params.id});
+
+    return res.json(`this menu ${menu} has been deleted`)
 }

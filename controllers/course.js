@@ -167,8 +167,8 @@ exports.popular = async (req, res) => {
             let sum = 0;
 
             for (let j = 0; j < eachCourseComments[i].length; j++) {
-                
-                if (eachCourseComments[i][j].score ) {
+
+                if (eachCourseComments[i][j].score) {
                     sum = eachCourseComments[i][j].score + sum;
                 }
 
@@ -185,8 +185,8 @@ exports.popular = async (req, res) => {
 }
 
 exports.presell = async (req, res) => {
-    const courses = await courseModel.find({status: 'presell'}).lean();
-    
+    const courses = await courseModel.find({ status: 'presell' }).lean();
+
     return res.status(200).json(courses)
 }
 
@@ -277,3 +277,39 @@ exports.removeSession = async (req, res) => {
 
     return res.status(204).json(session)
 };
+
+exports.getAll = async (req, res) => {
+    const courses = await courseModel.find({}).populate('categoryID').populate('creator').lean().sort({ _id: -1 });
+
+    const registers = await courseUserModel.find({}).lean();
+    const comments = await commentModel.find({}).lean();
+
+        let allCourses = [];
+
+    courses.forEach((course) => {
+        let courseTotalScore = 5;
+
+        const courseRegisters = registers.filter((register) => {
+            return register.course.toString() === course._id.toString()            //use toString() to change objectid to string
+        });
+
+        const courseComments = comments.filter((comment) => {
+            return comment.course.toString() === course._id.toString()            //use toString() to change objectid to string
+        });
+
+        courseComments.forEach((comment) => {
+            courseTotalScore = comment.score + courseTotalScore
+        });
+
+
+        allCourses.push({
+            ...course,
+            categoryID: course.categoryID.title,
+            creator: course.creator.name,
+            registers: courseRegisters.length,
+            courseAverageScore: (courseTotalScore / (courseComments.length + 1))
+        })
+    })
+
+    return res.json(allCourses)
+}

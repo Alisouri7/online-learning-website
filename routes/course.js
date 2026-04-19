@@ -7,12 +7,10 @@ const multer = require('multer');
 const multerCoverStorage = require('../utils/coverUploader');
 const multerVideoStorage = require('./../utils/videoUploader');
 
-router.route('/').post(
-    authMiddleware, 
-    isAdminMiddleware, 
-    multer({ storage: multerCoverStorage, limits: { fileSize: 10000000 } }).single('cover'), 
-    courseController.create
-);
+router.route('/')
+    .post(authMiddleware, isAdminMiddleware,
+        multer({ storage: multerCoverStorage, limits: { fileSize: 10000000 } }).single('cover'), courseController.create)
+    .get(authMiddleware, isAdminMiddleware, courseController.getAll);
 
 router.route('/popular').get(courseController.popular);
 
@@ -32,7 +30,7 @@ router.route('/related/:href').get(courseController.getRelated);
 router.route('/:id/sessions').post(
     authMiddleware,
     isAdminMiddleware,
-    multer({ storage: multerVideoStorage, limits: { fileSize: 100000000 }}).single('video'),
+    multer({ storage: multerVideoStorage, limits: { fileSize: 100000000 } }).single('video'),
     courseController.createSession
 );
 
